@@ -1,0 +1,39 @@
+#!/bin/bash
+
+#$ -q std.q
+#$ -N Tad80Vamb
+# - $ -M alexander.m.paoli@uibk.ac.at
+#$ -m eas
+#$ -cwd
+#$ -l h_rt=12:00:00
+#$ -l h_vmem=15g
+#$ -t 1-27
+
+. ~/.bashrc
+load_miga
+export "PATH=$HOME/data/apps/enveomics/Scripts:$PATH"
+cd "$HOME/data/projects/hsp_vamb/07.tad80/Vamb"
+
+k=0
+for i in $(cat "../../06.mapping/list.txt") ; do
+  # Does it exist?
+  dir="../../00.trimming"
+  [[ -e "$dir/${i}.json" ]] || continue
+
+  # Is this the job we want to run?
+  let k=$k+1
+  [[ $k == $SGE_TASK_ID ]] || continue
+
+  # Run BedTools (unless BedGraph already exists)
+  [[ -s "${i}.bg" ]] || \
+    bedtools genomecov -ibam "../../06.mapping/${i}.sorted.bam" -bga > "${i}.bg"
+
+  # Calculate TAD80 for each genome
+  for j in $(cat "../../05.miga/representatives.txt") ; do
+    NEW_NAME=$(echo "$j" | tr '-' '_')
+    echo -ne "$NEW_NAME\t"
+    grep "^$NEW_NAME-" "${i}.bg" \
+      | BedGraph.tad.rb -i /dev/stdin -r 0.8 --length --breadth
+  done | tee > "${i}.tsv"
+done
+

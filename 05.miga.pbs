@@ -1,0 +1,16 @@
+#!/usr/bin/bash
+
+#$ -q std.q
+#$ -N MiGA_HSP_VAMB
+#$ -M alexander.m.paoli@student.uibk.ac.at
+#$ -m eas
+#$ -cwd
+#$ -l h_rt=48:00:00
+#$ -l h_vmem=0.5G
+#$ -pe openmpi-fillup 24-1024
+
+cd ~/data/projects/hsp_vamb/05.miga
+
+awk '{ for (i = 1; i <= $2; ++i) print $1 }' < "$PE_HOSTFILE" > hosts.txt
+ssh -t -t "$(hostname)" "$(pwd)/../scripts/05.miga.bash"
+

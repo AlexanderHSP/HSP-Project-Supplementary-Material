@@ -1,0 +1,29 @@
+#!/usr/bin/bash
+
+#$ -q std.q
+#$ -N NonpareilTrim
+#$ -M alexander.m.paoli@student.uibk.ac.at
+#$ -m eas
+#$ -cwd
+#$ -l h_rt=24:00:00
+#$ -l h_vmem=20G
+#$ -t 1-27
+
+. ~/.bashrc
+cd ~/data/projects/hsp_vamb/11.nonpareil
+load_nonpareil
+
+k=0
+for file in ../00.trimming/*.1.clipped.fastq.gz ; do
+  # Is this the job we want to run?
+  let k=$k+1
+  [[ $k == $SGE_TASK_ID ]] || continue
+  i=$(basename "$file" .clipped.fastq.gz)
+  echo "===[ $i ]" >&2
+
+  [[ -s ${i}.npo ]] && break
+  gzip -cd "$file" > "${i}.fastq"
+  nonpareil -T kmer -s "${i}.fastq" -b "$i" -f fastq
+  rm "${i}.fastq"
+done
+

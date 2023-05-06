@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+#$ -q bigmem.q
+#$ -N classify_wf.vamb
+#$ -M alexander.m.paoli@student.uibk.ac.at
+#$ -m eas
+#$ -cwd
+#$ -l h_rt=12:00:00
+#$ -l h_vmem=300G
+
+. ~/.bashrc
+cd ~/data/projects/hsp_vamb/10.gtdbtk
+load_gtdbtk
+
+gtdbtk classify_wf --genome_dir ../05.miga/representatives/ --out_dir classify_wf/vamb/ --cpus 4

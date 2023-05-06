@@ -1,0 +1,47 @@
+#!/usr/bin/bash
+
+#$ -q std.q
+#$ -N Mapping
+#$ -M alexander.m.paoli@student.uibk.ac.at
+#$ -m eas
+#$ -cwd
+#$ -l h_rt=24:00:00
+#$ -l h_vmem=2G
+#$ -t 1-27
+#$ -pe openmp 28
+
+THR=28
+. ~/.bashrc
+cd ~/data/projects/hsp_vamb/06.mapping
+load_strong
+
+k=0
+for i in $(cat "../06.mapping/list.txt") ; do
+  # Does it exist?
+  dir="../00.trimming"
+  [[ -e "$dir/${i}.json" ]] || continue
+
+  # Is this the job we want to run?
+  let k=$k+1
+  [[ $k == $SGE_TASK_ID ]] || continue
+  echo "===[ $i ]" >&2
+
+  # Find the files
+  files=( $(ls "$dir/$i".[12].clipped.fastq.gz) )
+  INPUT=""
+  if [[ ${#files[@]} == 1 ]] ; then
+    INPUT="-U ${files[0]}"
+  else
+    INPUT="-1 ${files[0]} -2 ${files[1]}"
+  fi
+
+  # Run the mapping
+  bowtie2 --threads $THR --no-unal -x hsp_vamb_bins.bt2 $INPUT -S "${i}.sam"
+
+  # SAM -> BAM
+  samtools view -@ $THR -Sb "${i}.sam" > "${i}.bam"
+  rm "${i}.sam"
+  samtools sort -@ $THR -o "${i}.sorted.bam" "${i}.bam"
+  rm "${i}.bam"
+done
+

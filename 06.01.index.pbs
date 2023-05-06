@@ -1,0 +1,25 @@
+#!/usr/bin/bash
+
+#$ -q bigmem.q
+#$ -N IndexGenomes
+#$ -M alexander.m.paoli@student.uibk.ac.at
+#$ -m eas
+#$ -cwd
+#$ -l h_rt=48:00:00
+#$ -l h_vmem=10G
+#$ -pe openmp 4
+
+. ~/.bashrc
+cd ~/data/projects/hsp_vamb/06.mapping
+
+# Rename & concatenate all genomes
+load_miga
+for i in $(cat ../05.miga/representatives.txt) ; do
+  NEW_NAME=$(echo "$i" | tr '-' '_')
+  FastA.tag.rb -i "../05.miga/representatives/${i}.LargeContigs.fna" -o /dev/stdout -p "$NEW_NAME-"
+done | tee > hsp_vamb_bins.fna
+
+# Build Bowtie2 index
+load_strong
+bowtie2-build --threads 4 hsp_vamb_bins.fna hsp_vamb_bins.bt2
+

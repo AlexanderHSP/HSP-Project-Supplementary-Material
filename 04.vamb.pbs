@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+
+#$ -q bigmem.q
+#$ -N VAMB_HSP
+#$ -M alexander.m.paoli@student.uibk.ac.at
+#$ -m eas
+#$ -cwd
+#$ -l h_rt=12:00:00
+#$ -l h_vmem=5G
+#$ -pe openmp 8
+
+. ~/.bashrc
+cd ~/data/projects/hsp_vamb/03.mags
+load_vamb
+
+# Run Vamb
+vamb --outdir 03.mags --fasta ../02.index/catalogue.fna.gz \
+  --bamfiles ../02.index/*.bam -o C --minfasta 200000 \
+  -p 8
+

@@ -1,0 +1,42 @@
+#!/usr/bin/bash
+
+#$ -q bigmem.q
+#$ -N GenomeEq
+#$ -M alexander.m.paoli@student.uibk.ac.at
+#$ -m eas
+#$ -cwd
+#$ -l h_rt=48:00:00
+#$ -l h_vmem=5G
+#$ -pe openmp 3
+#$ -t 1-27
+
+THR=3
+. ~/.bashrc
+cd ~/data/projects/hsp_vamb/08.genome-eq
+
+k=0
+for i in $(cat "../00.trimming.txt") ; do
+  # Does it exist?
+  dir="../00.trimming"
+  [[ -e "$dir/${i}.json" ]] || continue
+
+  # Is this the job we want to run?
+  let k=$k+1
+  [[ $k == $SGE_TASK_ID ]] || continue
+
+  # Find the files
+  files=( $(ls "$dir/$i".[12].clipped.fastq.gz) )
+  INPUT=""
+  if [[ ${#files[@]} == 1 ]] ; then
+    INPUT="${files[0]}"
+  else
+    INPUT="${files[0]},${files[1]}"
+  fi
+
+  # Run MicrobeCensus
+  run_microbe_census.py -t $THR "$INPUT" "${i}.mcs"
+
+  # Extract Genome Equivalents
+  grep 'genome_equivalents:' "${i}.mcs" | tr -d ':' > "${i}.geq"
+done
+
