@@ -1,0 +1,27 @@
+#!/usr/bin/bash
+
+#$ -q std.q
+#$ -N map_HSP
+#$ -M alexander.m.paoli@student.uibk.ac.at
+#$ -m eas
+#$ -cwd
+#$ -l h_rt=12:00:00
+#$ -l h_vmem=5G
+#$ -pe openmp 8
+#$ -t 1-27
+
+. ~/.bashrc
+cd ~/data/projects/hsp_vamb/02.index
+load_vamb
+
+k=0
+for i in $(cat ../00.trimming.txt) ; do
+  # Is this the job we want to run?
+  let k=$k+1
+  [[ $k == $SGE_TASK_ID ]] || continue
+
+  minimap2 -t 8 -N 5 -ax sr catalogue.mmi \
+    ../00.trimming/${i}.1.clipped.fastq.gz  ../00.trimming/${i}.2.clipped.fastq.gz \
+    | samtools view -F 3584 -b --threads 8 > ${i}.bam
+done
+

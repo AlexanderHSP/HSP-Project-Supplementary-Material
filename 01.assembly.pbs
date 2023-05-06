@@ -1,0 +1,28 @@
+#!/usr/bin/bash
+
+#$ -q bigmem.q
+#$ -N Assembly_HSP
+#$ -M alexander.m.paoli@student.uibk.ac.at
+#$ -m eas
+#$ -cwd
+#$ -l h_rt=12:00:00
+#$ -l h_vmem=17G
+#$ -pe openmp 28
+#$ -t 1-27
+
+. ~/.bashrc
+cd ~/data/projects/hsp_vamb/01.assembly
+load_vamb
+
+k=0
+for i in $(cat ../00.trimming.txt) ; do
+  # Is this the job we want to run?
+  let k=$k+1
+  [[ $k == $SGE_TASK_ID ]] || continue
+
+  # Run SPADES
+  echo "===[ $i ]" >&2
+  dir="../00.trimming"
+  spades.py --meta -1 "$dir/${i}.1.clipped.fastq.gz" -2 "$dir/${i}.2.clipped.fastq.gz" -k 21,29,39,59,79,99 -t 28 -m 450gb -o $i
+done
+
