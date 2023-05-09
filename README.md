@@ -30,7 +30,7 @@ Calculating the genome equivalents with MicrobeCensus (https://github.com/snayfa
 Quality filtering, classifying and dereplicating steps with MiGA (https://github.com/bio-miga/miga). This script is the same as 05.miga.pbs/05.miga.bash. However, it was used again to combine to different collections of MAGs.
 
 ### 10.classify_wf.vamb.pbs
-The classify workflow with GTDB-Tk using the GTDB taxonomy.
+The classify workflow with GTDB-Tk using the GTDB taxonomy (https://ecogenomics.github.io/GTDBTk/commands/classify_wf.html).
 
 ### 11.nonpareil.pbs
 Nonpareil calculation to estimate average coverage and create Nonpareil curves for metagenomic datasets (https://github.com/lmrodriguezr/nonpareil).
