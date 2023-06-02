@@ -38,8 +38,8 @@ The classify workflow with [GTDB-Tk](https://ecogenomics.github.io/GTDBTk/comman
 ## R scripts
 Scripts for some data visualization/analysation in RStudio
 
-**barplot.R** - for the creation of barplots 
-**correlation**.R - to investigate a possible correlation between the relative abundance data of MAGs with metadata
-**nonpareil.R** - to calculate nonpareil curves 
-**relativeAbundance.R** - visualization of the relative abundance data with heatmap3 package
-**venn.R** - for the creation of venn diagrams with the package VennDiagram
+- **barplot.R** - for the creation of barplots 
+- **correlation**.R - to investigate a possible correlation between the relative abundance data of MAGs with metadata
+- **nonpareil.R** - to calculate nonpareil curves 
+- **relativeAbundance.R** - visualization of the relative abundance data with heatmap3 package
+- **venn.R** - for the creation of venn diagrams with the package VennDiagram
