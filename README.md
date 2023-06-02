@@ -38,7 +38,7 @@ Nonpareil calculation to estimate average coverage and create Nonpareil curves f
 ## R scripts
 Scripts for some data visualization/analysation in RStudio
 
-# barplot.R # - for the creation of barplots 
+#barplot.R# - for the creation of barplots 
 # correlation.R # - to investigate a possible correlation between the relative abundance data of MAGs with metadata
 # nonpareil.R # - to calculate nonpareil curves 
 # relativeAbundance.R # - visualization of the relative abundance data with heatmap3 package
