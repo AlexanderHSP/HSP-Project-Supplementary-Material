@@ -6,40 +6,40 @@ This is a collection of scripts used in my master thesis. To create these script
 [SPAdes](https://github.com/ablab/spades#sec1.2) assembles the metagenomic samples.
 
 ### 02.index.pbs
-Concatenate.py (included in Vamb) was used to joins the input contigs to a single FASTA file. Moreover, minimap2 (https://github.com/lh3/minimap2) index will be prepared.
+Concatenate.py (included in Vamb) was used to joins the input contigs to a single FASTA file. Moreover, [minimap2](https://github.com/lh3/minimap2) index will be prepared.
 
 ### 03.map.pbs
 This script will map each of the read files back to the FASTA file with minimap2.  
 
 ### 04.vamb.pbs
-Simple code to run Vamb (https://github.com/RasmussenLab/vamb), a metagenomic binner, with the default parameters. 
+Simple code to run [Vamb](https://github.com/RasmussenLab/vamb), a metagenomic binner, with the default parameters. 
 
 ### 05.miga.pbs/05.miga.bash
-Quality filtering, classifying and dereplicating steps with MiGA (https://github.com/bio-miga/miga). 
+Quality filtering, classifying and dereplicating steps with [MiGA](https://github.com/bio-miga/miga). 
 
 ### 06.01.index.pbs/06.02.map.pbs
-These dereplicated MAGs were then mapped back to the trimmed data for each sample with Bowtie2 (https://github.com/BenLangmead/bowtie2) and converted from SAM files to BAM files with samtools (https://github.com/samtools/samtools).
+These dereplicated MAGs were then mapped back to the trimmed data for each sample with [Bowtie2](https://github.com/BenLangmead/bowtie2) and converted from SAM files to BAM files with [samtools](https://github.com/samtools/samtools).
 
 ### 07.tad.pbs
-Calculating TAD80 (truncated average depth of central 80%) for each MAG with bedtools (https://github.com/arq5x/bedtools2).
+Calculating TAD80 (truncated average depth of central 80%) for each MAG with [bedtools](https://github.com/arq5x/bedtools2).
 
 ### 08.genome-eq.pbs
-Calculating the genome equivalents with MicrobeCensus (https://github.com/snayfach/MicrobeCensus).
+Calculating the genome equivalents with [MicrobeCensus](https://github.com/snayfach/MicrobeCensus).
 
 ### 09.miga.pbs/09.miga.bash
-Quality filtering, classifying and dereplicating steps with MiGA (https://github.com/bio-miga/miga). This script is the same as 05.miga.pbs/05.miga.bash. However, it was used again to combine to different collections of MAGs.
+Quality filtering, classifying and dereplicating steps with [MiGA](https://github.com/bio-miga/miga). This script is the same as 05.miga.pbs/05.miga.bash. However, it was used again to combine to different collections of MAGs.
 
 ### 10.classify_wf.vamb.pbs
-The classify workflow with GTDB-Tk using the GTDB taxonomy (https://ecogenomics.github.io/GTDBTk/commands/classify_wf.html).
+The classify workflow with [GTDB-Tk](https://ecogenomics.github.io/GTDBTk/commands/classify_wf.html) using the GTDB taxonomy.
 
 ### 11.nonpareil.pbs
-Nonpareil calculation to estimate average coverage and create Nonpareil curves for metagenomic datasets (https://github.com/lmrodriguezr/nonpareil).
+[Nonpareil](https://github.com/lmrodriguezr/nonpareil) calculation to estimate average coverage and create Nonpareil curves for metagenomic datasets.
 
 ## R scripts
 Scripts for some data visualization/analysation in RStudio
 
-#barplot.R# - for the creation of barplots 
-# correlation.R # - to investigate a possible correlation between the relative abundance data of MAGs with metadata
-# nonpareil.R # - to calculate nonpareil curves 
-# relativeAbundance.R # - visualization of the relative abundance data with heatmap3 package
-# venn.R # - for the creation of venn diagrams with the package VennDiagram
+**barplot.R** - for the creation of barplots 
+**correlation**.R - to investigate a possible correlation between the relative abundance data of MAGs with metadata
+**nonpareil.R** - to calculate nonpareil curves 
+**relativeAbundance.R** - visualization of the relative abundance data with heatmap3 package
+**venn.R** - for the creation of venn diagrams with the package VennDiagram
