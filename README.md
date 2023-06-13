@@ -6,7 +6,7 @@ This is a collection of scripts used in my master thesis. To create these script
 [SPAdes](https://github.com/ablab/spades#sec1.2) assembles the metagenomic samples.
 
 ### 02.index.pbs
-Concatenate.py (included in Vamb) was used to joins the input contigs to a single FASTA file. Moreover, [minimap2](https://github.com/lh3/minimap2) index will be prepared.
+Concatenate.py (included in Vamb) was used to join the input contigs to a single FASTA file. Moreover, [minimap2](https://github.com/lh3/minimap2) index will be prepared.
 
 ### 03.map.pbs
 This script will map each of the read files back to the FASTA file with minimap2.  
